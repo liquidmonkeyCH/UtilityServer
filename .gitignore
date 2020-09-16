@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+.vs
+bin_debug
+obj
