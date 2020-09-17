@@ -66,12 +66,7 @@ namespace UProject
 	using sint64 = std::int64_t;
 	using uint64 = std::uint64_t;
 
-	struct MS_HEADER
-	{
-		uint32 m_uiLen;
-		uint32 m_uiId;
-	};
-	static constexpr net_size_t MS_HEADER_LEN = (net_size_t)sizeof(MS_HEADER);
+	static constexpr size_t MAX_PACKET_LEN = 4096;
 
 	class CData
 	{

@@ -10,10 +10,13 @@
 #include "Common/CommonDefines.hpp"
 #include "Utility/msg_pares_len.hpp"
 #include "Utility/mem_stream_buffer.hpp"
+#include "Utility/com_protobuf.hpp"
 
 namespace UProject
 {
-	class GateSession
+	class GateSession : public com::protobuf_session<
+		net::socket_type::tcp,msg::pares_len::comfirmer<
+		mem::stream_buffer<MAX_PACKET_LEN>>>
 	{
 
 	};
