@@ -108,8 +108,8 @@ template<socket_type st, class pares_message_wrap>
 bool session_wrap<st, pares_message_wrap>::send(const void* data, net_size_t len)
 {
 	UTILITY_NET_SESSION_SEND_BEGIN(len);
-	UTILITY_NET_SESSION_SEND(data,len,b_send);
-	UTILITY_NET_SESSION_SEND_END(b_send);
+	UTILITY_NET_SESSION_SEND(data,len);
+	UTILITY_NET_SESSION_SEND_END();
 	return true;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
