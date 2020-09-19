@@ -18,7 +18,6 @@ namespace UProject
 		net::socket_type::tcp,msg::pares_len::comfirmer<
 		mem::stream_buffer<MAX_PACKET_LEN>>>
 	{
-
 	};
 }
 

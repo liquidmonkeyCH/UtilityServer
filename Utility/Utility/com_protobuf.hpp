@@ -116,7 +116,7 @@ public:
 		UTILITY_NET_SESSION_SEND(&kHeader, msg::MS_HEADER_LEN);
 		_impl::protobuf_ostream kStream(&this->m_send_buffer);
 		data.SerializeToZeroCopyStream(&kStream);
-		_flag |= kStream.need_send();
+		if(kStream.need_send()) _flag = true;
 		UTILITY_NET_SESSION_SEND_END();
 		return true;
 	}

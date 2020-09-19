@@ -124,7 +124,8 @@ protected:
 		_size = _left;									\
 		_p = this->m_send_buffer.write(_size);			\
 		memcpy(_p, _packet, _size);						\
-		_flag |= this->m_send_buffer.commit_write(_size);\
+		if(this->m_send_buffer.commit_write(_size))		\
+			_flag = true;								\
 		_packet += _size;								\
 		_left -= _size;									\
 	}
