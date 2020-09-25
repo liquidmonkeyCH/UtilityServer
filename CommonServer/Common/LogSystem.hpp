@@ -13,7 +13,7 @@
 #include "Utility/com_singleton.hpp"
 #include "Utility/com_guard.hpp"
 
-namespace CrossGate
+namespace UProject
 {
 	class LogRecorder
 	{

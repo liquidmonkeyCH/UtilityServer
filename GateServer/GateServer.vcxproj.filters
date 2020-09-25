@@ -15,12 +15,18 @@
     <ClCompile Include="GateSession.cpp">
       <Filter>Framework</Filter>
     </ClCompile>
+    <ClCompile Include="GateResponder.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GateServer.hpp">
       <Filter>Framework</Filter>
     </ClInclude>
     <ClInclude Include="GateSession.hpp">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="GateResponder.hpp">
       <Filter>Framework</Filter>
     </ClInclude>
   </ItemGroup>

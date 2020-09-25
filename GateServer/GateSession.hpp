@@ -18,6 +18,14 @@ namespace UProject
 		net::socket_type::tcp,msg::pares_len::comfirmer<
 		mem::stream_buffer<MAX_PACKET_LEN>>>
 	{
+	public:
+		GateSession(void) :m_siCode(0){}
+		~GateSession(void) = default;
+	private:
+		void on_connect(void) {}
+		void on_close(reason) {}
+	private:
+		uint64 m_siCode;
 	};
 }
 

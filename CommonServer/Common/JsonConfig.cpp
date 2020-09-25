@@ -6,7 +6,7 @@
 
 #include "JsonConfig.hpp"
 
-namespace CrossGate
+namespace UProject
 {
     bool JsonConfig::Load(const char * json_file)
     {

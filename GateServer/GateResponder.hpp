@@ -13,7 +13,7 @@
 
 namespace UProject
 {
-	class GateResponder : public net::responder<GateSession, msg::hanlder_manager_alone>
+	class GateResponder : public net::responder<GateSession, msg::handler_manager_alone>
 	{
 	public:
 		GateResponder(void) {}

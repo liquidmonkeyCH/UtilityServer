@@ -147,11 +147,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GateResponder.cpp" />
     <ClCompile Include="GateServer.cpp" />
     <ClCompile Include="GateSession.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GateResponder.hpp" />
     <ClInclude Include="GateServer.hpp" />
     <ClInclude Include="GateSession.hpp" />
   </ItemGroup>

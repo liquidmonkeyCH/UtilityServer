@@ -38,7 +38,7 @@
 	pRecorder->m_pIdlePrev = m_pIdleRecorder;						\
 	m_pIdleRecorder = pRecorder;
 
-namespace CrossGate
+namespace UProject
 {
 	
 	LogRecorder::node_t::node_t(void)

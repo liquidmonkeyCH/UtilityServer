@@ -11,7 +11,7 @@
 #include "Utility/com_singleton.hpp"
 #include "json.h"
 
-namespace CrossGate
+namespace UProject
 {
 	class JsonConfig : public com::iface::Singleton<JsonConfig>
 	{

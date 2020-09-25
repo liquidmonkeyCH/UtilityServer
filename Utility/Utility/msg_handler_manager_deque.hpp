@@ -15,17 +15,17 @@ namespace Utility
 namespace msg
 {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-class hanlder_manager_alone
+class handler_manager_alone
 {
 public:
-	hanlder_manager_alone(void) :m_handler(nullptr){}
-	virtual ~hanlder_manager_alone(void) = default;
+	handler_manager_alone(void) :m_handler(nullptr){}
+	virtual ~handler_manager_alone(void) = default;
 
-	hanlder_manager_alone(const hanlder_manager_alone&) = delete;
-	hanlder_manager_alone& operator=(const hanlder_manager_alone&) = delete;
+	handler_manager_alone(const handler_manager_alone&) = delete;
+	handler_manager_alone& operator=(const handler_manager_alone&) = delete;
 public:
 	handler_t get_handle(mem::message* msg = nullptr) { (void)msg; return m_handler; }
-	bool attach(handler_t handle) { m_handler = handle; }
+	bool attach(handler_t handle) { m_handler = handle; return true; }
 private:
 	handler_t m_handler;
 };
