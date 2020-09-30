@@ -13,7 +13,7 @@ namespace Utility
 namespace msg
 {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-void dispatcher::task_info::run(void)
+void dispatcher::task_info::exec(void)
 {
 	m_controler->dispatch_node(m_obj);
 }

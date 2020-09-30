@@ -24,7 +24,7 @@ public:
 	{
 		channel_node* m_obj;
 		controler_iface* m_controler;
-		void run(void);
+		void exec(void);
 	};
 	friend class controler_iface;
 public:

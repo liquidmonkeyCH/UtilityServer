@@ -7,6 +7,7 @@
 #define __COM_SCHEDULE_HPP__
 
 #include "com_thread_pool.hpp"
+#include <chrono>
 #include <map>
 
 namespace Utility
@@ -15,22 +16,30 @@ namespace Utility
 namespace com
 {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-template<class T>
+template<class T, class _Clock, class _Duration = typename _Clock::duration>
 class schedule_wrap
 {
 protected:
 	using func_t = std::function < void() >;
+	using time_point = std::chrono::time_point<_Clock,_Duration>;
 	using task_t = typename std::conditional<std::is_same<T, func_t>::value, T, task_wrap<T>>::type;
 	using threadpool_t = typename std::conditional<std::is_same<T, func_t>::value, com::threadpool, com::task_threadpool<T>>::type;
+	using map_t = std::multimap<time_point, task_t>;
+	using iterator = typename map_t::iterator;
 	enum class state :unsigned char { none, start, stop };
+	struct event_t{
+		sint64 m_siCode;
+		iterator m_iter;
+	};
 protected:
 	threadpool_t m_threadpool;
 	std::thread m_main_thread;
-	std::multimap<time_t, task_t> tasks;
+	std::multimap<time_point, task_t> tasks;
 	std::mutex mtx;
 	std::condition_variable cv;
 	std::atomic_size_t m_ntasks = { 0 };
 	state m_state = state::none;
+	sint64 m_siCode;
 public:
 	schedule_wrap(void) {}
 	~schedule_wrap(void) {}
@@ -46,13 +55,27 @@ public:
 		m_main_thread = std::thread(&schedule_wrap<T>::run_task,this);
 	}
 
-	bool schedule(time_t tm,task_t&& task)
+	int attach(time_point tp, task_t&& task)
 	{
 		std::unique_lock<std::mutex> lock(mtx);
 		if (m_state != state::start)
 			return false;
 
-		tasks.emplace(std::make_pair(tm,task))
+		tasks.emplace(std::make_pair(tp, task))
+			lock.unlock();
+
+		++m_ntasks;
+		cv.notify_one();
+		return true;
+	}
+
+	bool schedule(time_point tp,task_t&& task)
+	{
+		std::unique_lock<std::mutex> lock(mtx);
+		if (m_state != state::start)
+			return false;
+
+		tasks.emplace(std::make_pair(tp,task))
 		lock.unlock();
 
 		++m_ntasks;
@@ -62,9 +85,9 @@ public:
 
 	template<class F, class... Args>
 	// 提交任务 返回是否提交成功
-	bool schedule_normal(time_t tm, F&& f, Args&&... args)
+	bool schedule_normal(time_point tp, F&& f, Args&&... args)
 	{
-		return schedule(tm,func_t(std::bind(std::forward<F>(f), std::forward<Args>(args)...)));
+		return schedule(tp,func_t(std::bind(std::forward<F>(f), std::forward<Args>(args)...)));
 	}
 
 	// 关闭任务提交 等待剩余任务完成 (调用时请确保pool不会析构)
@@ -110,10 +133,8 @@ private:
 			if (iter == tasks.end())
 				continue;
 
-			 
-			time_t tmNow = time(nullptr);
-			if(iter->first > tmNow)
-				cv.wait_until(lock,std::chrono::time_point)
+			time_point now = time_point::now();
+			cv.wait_until(lock, iter->first)
 
 			task_t task(std::move(tasks.front()));
 			tasks.pop();

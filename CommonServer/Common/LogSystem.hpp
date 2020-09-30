@@ -77,7 +77,7 @@ namespace UProject
 		{
 			LogSystem* m_pService;
 			LogRecorder* m_pRecoder;
-			void run(void) { m_pService->save(m_pRecoder); }
+			void exec(void) { m_pService->save(m_pRecoder); }
 		};
 		DECLARE_SINGLETON(LogSystem)
 	public:
