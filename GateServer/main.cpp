@@ -6,6 +6,7 @@
 
 #include "GateServer.hpp"
 #include <Chrono>
+#include "Utility/com_schedule.hpp"
 using namespace UProject;
 
 int main(int argc, char* argv[])
@@ -29,8 +30,18 @@ int main(int argc, char* argv[])
 	ctime_s(buffer, 1024, &tt);
 	std::cout << "tomorrow will be: " << buffer;
 
+	com::schedule<std::chrono::system_clock> m_scheduler;
 
-
+	m_scheduler.init(10);
+	m_scheduler.attach(system_clock::now() + std::chrono::microseconds(2000), []() {std::cout << "haha1" << std::endl; });
+	m_scheduler.attach(system_clock::now() + std::chrono::microseconds(2100), []() {std::cout << "haha2" << std::endl; });
+	m_scheduler.attach(system_clock::now() + std::chrono::microseconds(2500), []() {std::cout << "haha3" << std::endl; });
+	auto res = m_scheduler.attach(system_clock::now() + std::chrono::microseconds(2700), []() {std::cout << "haha4" << std::endl; });
+	m_scheduler.attach(system_clock::now() + std::chrono::microseconds(3000), []() {std::cout << "hoho" << std::endl; });
+	std::this_thread::sleep_for(std::chrono::microseconds(2000));
+	if (res.cancel()) std::cout << "Cancle" << std::endl;
+	m_scheduler.stop();
+	
 	GateServer* server = GateServer::GetInstance();
 	if (server->Start(argc, argv))
 		server->Run();
