@@ -1,16 +1,24 @@
 /**
-* @file com_schedule.hpp
+* @file com_scheduler.hpp
 *
 * @author Hourui (liquidmonkey)
 */
-#ifndef __COM_SCHEDULE_HPP__
-#define __COM_SCHEDULE_HPP__
+#ifndef __COM_SCHEDULER_HPP__
+#define __COM_SCHEDULER_HPP__
 
 #include "com_thread_pool.hpp"
 #include "mem_data_factory.hpp"
 #include <chrono>
 #include <atomic>
 #include <map>
+
+//#define SCHEDULER_LOG
+
+#ifdef SCHEDULER_LOG
+#define SCHEDULER_DEBUG(fmt,...) Clog::debug(fmt,##__VA_ARGS__);
+#else
+#define SCHEDULER_DEBUG(fmt,...)
+#endif
 
 namespace Utility
 {
@@ -19,12 +27,11 @@ namespace com
 {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template<class _Clock, class _Duration = typename _Clock::duration>
-class schedule
+class scheduler
 {
 private:
 	using time_point = std::chrono::time_point<_Clock, _Duration>;
 	using func_t = std::function<void()>;
-	enum class state :unsigned char { none, start, stop };
 	struct event_t
 	{
 		event_t(void) = default;
@@ -35,7 +42,7 @@ private:
 public:
 	class Event {
 	public:
-		friend class schedule;
+		friend class scheduler;
 		Event(std::uint32_t siCode, event_t* ev) :m_siCode(siCode), m_event(ev) {}
 		~Event(void) = default;
 		bool cancel(void) { return m_event ? m_event->m_siCode.compare_exchange_strong(m_siCode, 0) : false; }
@@ -52,28 +59,28 @@ private:
 	std::mutex mtx;
 	std::condition_variable cv;
 	std::atomic_size_t m_ntasks = { 0 };
-	state m_state = state::none;
-	std::uint32_t m_siCode;
+	bool m_running = false;
+	std::uint32_t m_siCode = 0;
 public:
-	schedule(void) {}
-	~schedule(void) {}
+	scheduler(void) = default;
+	~scheduler(void) = default;
 public:
 	void init(size_t size)
 	{
 		assert(size != 0);
 		std::unique_lock<std::mutex> lock(this->mtx);
-		if (this->m_state != state::none) return;
-		m_threadpool.init(size);
-		this->m_state = state::start;
+		if (m_running) return;
+		m_running = true;
 		lock.unlock();
-		m_main_thread = std::thread(&schedule<_Clock,_Duration>::run_task,this);
+		m_main_thread = std::thread(&scheduler<_Clock,_Duration>::run_task,this);
+		m_threadpool.init(size);
 	}
 
 	template<class F, class... Args>
 	Event attach(time_point tp, F&& f, Args&&... args)
 	{
 		std::unique_lock<std::mutex> lock(mtx);
-		if (m_state != state::start)
+		if (!m_running)
 			return {0,nullptr};
 
 		if (++m_siCode == 0)
@@ -92,12 +99,13 @@ public:
 	bool stop(void)
 	{
 		std::unique_lock<std::mutex> lock(mtx);
-		if (m_state != state::start) return false;
-		m_state = state::stop;
-		m_threadpool.safe_stop();
+		if (!m_running) return false;
+		m_running = false;
 		lock.unlock();
 		cv.notify_one();
+		SCHEDULER_DEBUG("stop:%lld", std::chrono::system_clock::now().time_since_epoch().count())
 		m_main_thread.join();
+		m_threadpool.safe_stop();
 		return true;
 	}
 
@@ -110,18 +118,23 @@ private:
 			if (tasks.empty())
 				cv.wait(lock);
 
-			if (m_state != state::start)
+			if (!m_running)
 				return;
 
 			auto begin = tasks.begin();
 			cv.wait_until(lock, begin->first);
 
-			if (m_state != state::start)
+			if (!m_running)
 				return;
 
 			time_point now = std::chrono::system_clock::now();
+			if (begin->first > now) 
+				continue;
+
 			auto iter = begin;
+			SCHEDULER_DEBUG("now:%lld", now.time_since_epoch().count())
 			do {
+				SCHEDULER_DEBUG("evt:%lld", iter->first.time_since_epoch().count())
 				if (iter->second.cancel())
 					m_threadpool.schedule(std::move(iter->second.m_event->m_func));
 				m_event_pool.free(iter->second.m_event);
@@ -135,4 +148,4 @@ private:
 }// namspace com
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 }// namespace Utility
-#endif //__COM_THREAD_POOL_HPP__ 
+#endif //__COM_SCHEDULER_HPP__ 

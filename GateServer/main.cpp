@@ -6,11 +6,15 @@
 
 #include "GateServer.hpp"
 #include <Chrono>
-#include "Utility/com_schedule.hpp"
+#include "Utility/com_scheduler.hpp"
+#include "Utility/logger.hpp"
 using namespace UProject;
 
 int main(int argc, char* argv[])
 {
+	logger kLogger(logger::log_level::debug);
+	Clog::active_logger(&kLogger);
+
 	using std::chrono::system_clock;
 	
 	std::chrono::duration<int, std::ratio<60 * 60 * 24> > one_day(1);
@@ -30,18 +34,19 @@ int main(int argc, char* argv[])
 	ctime_s(buffer, 1024, &tt);
 	std::cout << "tomorrow will be: " << buffer;
 
-	com::schedule<std::chrono::system_clock> m_scheduler;
+	com::scheduler<std::chrono::system_clock> m_scheduler;
 
 	m_scheduler.init(10);
-	m_scheduler.attach(system_clock::now() + std::chrono::microseconds(2000), []() {std::cout << "haha1" << std::endl; });
-	m_scheduler.attach(system_clock::now() + std::chrono::microseconds(2100), []() {std::cout << "haha2" << std::endl; });
-	m_scheduler.attach(system_clock::now() + std::chrono::microseconds(2500), []() {std::cout << "haha3" << std::endl; });
-	auto res = m_scheduler.attach(system_clock::now() + std::chrono::microseconds(2700), []() {std::cout << "haha4" << std::endl; });
-	m_scheduler.attach(system_clock::now() + std::chrono::microseconds(3000), []() {std::cout << "hoho" << std::endl; });
-	std::this_thread::sleep_for(std::chrono::microseconds(2000));
-	if (res.cancel()) std::cout << "Cancle" << std::endl;
+	m_scheduler.attach(system_clock::now() + std::chrono::microseconds(2000), []() {Clog::debug("haha1"); });
+	m_scheduler.attach(system_clock::now() + std::chrono::microseconds(2100), []() {Clog::debug("haha2"); });
+	m_scheduler.attach(system_clock::now() + std::chrono::microseconds(2500), []() {Clog::debug("haha3"); });
+	auto res = m_scheduler.attach(system_clock::now() + std::chrono::microseconds(2700), []() {Clog::debug("haha4"); });
+	m_scheduler.attach(system_clock::now() + std::chrono::microseconds(4000), []() {Clog::debug("hoho"); });
+	std::this_thread::sleep_for(std::chrono::microseconds(1400));
+	if (res.cancel()) Clog::debug("Cancel,%lld",system_clock::now().time_since_epoch().count());
 	m_scheduler.stop();
-	
+	res = m_scheduler.attach(system_clock::now() + std::chrono::microseconds(2700), []() {Clog::debug("haha5"); });
+	if (!res) Clog::debug("Bad event");
 	GateServer* server = GateServer::GetInstance();
 	if (server->Start(argc, argv))
 		server->Run();
