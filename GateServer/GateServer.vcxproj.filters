@@ -18,6 +18,7 @@
     <ClCompile Include="GateResponder.cpp">
       <Filter>Framework</Filter>
     </ClCompile>
+    <ClCompile Include="UtilityTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GateServer.hpp">
@@ -29,5 +30,6 @@
     <ClInclude Include="GateResponder.hpp">
       <Filter>Framework</Filter>
     </ClInclude>
+    <ClInclude Include="UtilityTest.hpp" />
   </ItemGroup>
 </Project>

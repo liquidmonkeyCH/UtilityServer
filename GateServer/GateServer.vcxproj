@@ -151,11 +151,13 @@
     <ClCompile Include="GateServer.cpp" />
     <ClCompile Include="GateSession.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="UtilityTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GateResponder.hpp" />
     <ClInclude Include="GateServer.hpp" />
     <ClInclude Include="GateSession.hpp" />
+    <ClInclude Include="UtilityTest.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

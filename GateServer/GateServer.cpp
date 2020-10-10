@@ -11,6 +11,7 @@
 
 // 系统服务
 #include "Common/LogSystem.hpp"
+#include "UtilityTest.hpp"
 
 
 namespace UProject
@@ -38,7 +39,7 @@ namespace UProject
 	void GateServer::createLogsystem(void){
 		LogSystem* pLog = LogSystem::GetInstance();
 		pLog->Start(LogSystem::log_level::debug);
-		Clog::active_logger(pLog);
+		//Clog::active_logger(pLog);
 	}
 	void GateServer::destoryLogsystem(void){
 		LogSystem::GetInstance()->Stop();
@@ -60,6 +61,8 @@ namespace UProject
 	}
 
 	// 逻辑服务
-	void GateServer::createService(void) {}
+	void GateServer::createService(void) {
+		ServiceManager::Attach<UtilityTest>(&UtilityTest::run);
+	}
 	void GateServer::destoryService(void) {}
 }
