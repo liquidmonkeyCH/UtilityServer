@@ -1,0 +1,13 @@
+{
+	"debug": {
+		"cxx_flags": "-ggdb"
+	},
+	"release": {
+		"cxx_flags": "-o3"
+	},
+	"common": {
+		"defines": "",
+		"include_path": "../Utility;../CommonServer",
+		"cxx_flags": "-std=c++17 -W -Wall -Wno-unused-parameter"
+	}
+}
