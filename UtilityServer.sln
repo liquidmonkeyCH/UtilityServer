@@ -17,6 +17,10 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Utility", "..\Utility\Utility\Utility.vcxproj", "{F3243389-889C-4619-B91D-5A750C1B30AA}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameServer", "GameServer\GameServer.vcxproj", "{0A209192-B63A-476F-96A6-F73F193D5B62}"
+	ProjectSection(ProjectDependencies) = postProject
+		{21FD6372-8A6F-4764-A89C-E2E87B99B411} = {21FD6372-8A6F-4764-A89C-E2E87B99B411}
+		{F3243389-889C-4619-B91D-5A750C1B30AA} = {F3243389-889C-4619-B91D-5A750C1B30AA}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
