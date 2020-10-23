@@ -33,7 +33,7 @@ protected:
 	void do_close(void) { on_close(m_close_reason);  m_message.clear(); }
 	virtual void on_close(int) = 0;
 
-	void post_send(void) { m_controler->post_request(this, &m_message); }
+	void post_request(void) { m_controler->post_request(this, &m_message); }
 protected:
 	enum class state { none, running, closing };
 	std::mutex m_mutex;
@@ -67,7 +67,7 @@ protected:
 	} while (left != 0);
 
 #define UTILITY_MSG_SESSION_ADD_MESSAGE_END(flag)		\
-	if (flag) this->post_send();
+	if (flag) this->post_request();
 
 template<class pares_message_wrap>
 session<pares_message_wrap>::session(void)

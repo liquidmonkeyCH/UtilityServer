@@ -8,7 +8,7 @@
 
 namespace UProject
 {
-	msg::err GateHandler(msg::object_iface* obj, mem::message* msg)
+	int GateHandler(msg::object_iface* obj, mem::message* msg)
 	{
 		uint32 id;
 		if (!msg->get(id)) return msg::err::unpack;
@@ -20,7 +20,7 @@ namespace UProject
 			break;
 		}
 
-		return msg::err::none;
+		return 0;
 	}
 
 	void GateResponder::on_start(void)

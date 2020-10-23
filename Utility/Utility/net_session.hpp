@@ -11,6 +11,7 @@
 #include "net_framework.hpp"
 #include "net_io_service.hpp"
 #include "msg_object.hpp"
+#include "msg_controler.hpp"
 
 namespace Utility
 {
@@ -47,8 +48,8 @@ public:
 	void close(reason);
 	bool is_connected(void);
 protected:
-	void set_connected(framework* parent,fd_t fd, sockaddr_storage* addr);
-	virtual void handle_error(msg::err);
+	void set_connected(framework* parent, fd_t fd, sockaddr_storage* addr);
+	virtual void handle_error(int);
 	//! for wrap
 	virtual void clear(void) = 0;
 	virtual void on_connect(void) = 0;
@@ -57,10 +58,10 @@ protected:
 	virtual void process_close(void) = 0;
 protected:
 	io_service_iface* m_io_service;
-	framework* m_parent;
 	std::atomic<state> m_state;
 
 	socket_iface* m_socket;
+	framework* m_parent;
 
 	per_io_data m_recv_data;
 	per_io_data m_send_data;
@@ -81,7 +82,7 @@ public:
 	session_wrap(void);
 	virtual ~session_wrap(void);
 protected:
-	void init_buffer(std::size_t recv_buffer_size, std::size_t send_buffer_size);
+	void init(std::size_t recv_buffer_size, std::size_t send_buffer_size, msg::controler_iface* controler);
 
 	void clear(void);
 	void do_close(void);
