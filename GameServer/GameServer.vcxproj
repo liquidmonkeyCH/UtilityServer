@@ -23,11 +23,13 @@
     <ClCompile Include="ClientSession.cpp" />
     <ClCompile Include="GameServer.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientResponder.hpp" />
     <ClInclude Include="ClientSession.hpp" />
     <ClInclude Include="GameServer.hpp" />
+    <ClInclude Include="User.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

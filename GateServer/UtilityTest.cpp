@@ -2,6 +2,7 @@
 #include "Utility/logger.hpp"
 #include <iostream>
 #include <sstream>
+#include <fstream>
 using namespace Utility;
 
 #include "Utility/com_hex_caster.hpp"

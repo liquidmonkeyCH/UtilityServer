@@ -43,11 +43,12 @@ public:
 	class Event {
 	public:
 		friend class scheduler;
-		Event(std::uint32_t siCode, event_t* ev) :m_siCode(siCode), m_event(ev) {}
 		~Event(void) = default;
-		bool cancel(void) { return m_event ? m_event->m_siCode.compare_exchange_strong(m_siCode, 0) : false; }
+		inline bool cancel(void) { return m_event ? m_event->m_siCode.compare_exchange_strong(m_siCode, 0) : false; }
 		operator bool (void){ return m_event ? m_event->m_siCode == m_siCode : false; }
 	private:
+		Event(std::uint32_t siCode, event_t* ev) :m_siCode(siCode), m_event(ev) {}
+
 		std::uint32_t m_siCode;
 		event_t* m_event;
 	};
@@ -68,7 +69,7 @@ public:
 	void init(size_t size)
 	{
 		assert(size != 0);
-		std::unique_lock<std::mutex> lock(this->mtx);
+		std::unique_lock<std::mutex> lock(mtx);
 		if (m_running) return;
 		m_running = true;
 		lock.unlock();
@@ -79,7 +80,7 @@ public:
 	template<class F, class... Args>
 	Event attach(time_point tp, F&& f, Args&&... args)
 	{
-		std::unique_lock<std::mutex> lock(mtx);
+		std::lock_guard<std::mutex> lock(mtx);
 		if (!m_running)
 			return {0,nullptr};
 
@@ -114,7 +115,7 @@ private:
 	void run_task(void)
 	{
 		do {
-			std::unique_lock<std::mutex> lock(this->mtx);
+			std::unique_lock<std::mutex> lock(mtx);
 			if (tasks.empty())
 				cv.wait(lock);
 

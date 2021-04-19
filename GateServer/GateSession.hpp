@@ -16,7 +16,7 @@ namespace UProject
 {
 	class GateSession : public com::protobuf_session<
 		net::socket_type::tcp,msg::pares_len::comfirmer<
-		mem::stream_buffer<MAX_PACKET_LEN>>>
+		mem::stream_buffer<MAX_P¡¢ACKET_LEN>>>
 	{
 	public:
 		GateSession(void) :m_siCode(0){}
