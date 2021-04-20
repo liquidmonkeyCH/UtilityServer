@@ -12,7 +12,7 @@
 #include "Utility/application.hpp"
 #include "Utility/com_singleton.hpp"
 #include "Utility/net_io_service_epoll.hpp"
-#include "Utility/msg_dispatcher.hpp"
+#include "Utility/task_dispatcher.hpp"
 
 namespace UProject
 {
@@ -41,8 +41,8 @@ namespace UProject
 		void destoryService(void);
 	private:
 		net::io_service_epoll m_io_service;
-		msg::dispatcher m_dispatcher_client;
-		msg::dispatcher m_dispatcher_other;
+		task::dispatcher m_dispatcher_client;
+		task::dispatcher m_dispatcher_other;
 	};
 }
 
