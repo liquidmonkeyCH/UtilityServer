@@ -87,18 +87,44 @@ void com_scheduler(void)
 	com::scheduler<std::chrono::system_clock> m_scheduler;
 
 	m_scheduler.init(10);
-	m_scheduler.attach(std::chrono::system_clock::now() - std::chrono::microseconds(2000), []() {Clog::debug("haha0"); });
-	m_scheduler.attach(std::chrono::system_clock::now() + std::chrono::microseconds(4000), []() {Clog::debug("hoho"); });
-	m_scheduler.attach(std::chrono::system_clock::now() + std::chrono::microseconds(2000), []() {Clog::debug("haha1"); });
-	m_scheduler.attach(std::chrono::system_clock::now() + std::chrono::microseconds(2100), []() {Clog::debug("haha2"); });
-	m_scheduler.attach(std::chrono::system_clock::now() + std::chrono::microseconds(2500), []() {Clog::debug("haha3"); });
-	auto res = m_scheduler.attach(std::chrono::system_clock::now() + std::chrono::microseconds(2700), []() {Clog::debug("haha4"); });
+	m_scheduler.attach(std::chrono::microseconds(2000), []() {Clog::debug("haha0"); });
+	m_scheduler.attach(std::chrono::microseconds(4000), []() {Clog::debug("hoho"); });
+	m_scheduler.attach(std::chrono::microseconds(2000), []() {Clog::debug("haha1"); });
+	m_scheduler.attach(std::chrono::microseconds(2100), []() {Clog::debug("haha2"); });
+	m_scheduler.attach(std::chrono::microseconds(2500), []() {Clog::debug("haha3"); });
+	auto res = m_scheduler.attach(std::chrono::microseconds(2700), []() {Clog::debug("haha4"); });
 	std::this_thread::sleep_for(std::chrono::microseconds(1400));
 	if (res.cancel()) Clog::debug("Cancel,%lld", std::chrono::system_clock::now().time_since_epoch().count());
 	m_scheduler.stop();
-	res = m_scheduler.attach(std::chrono::system_clock::now() + std::chrono::microseconds(2700), []() {Clog::debug("haha5"); });
+	res = m_scheduler.attach(std::chrono::microseconds(2700), []() {Clog::debug("haha5"); });
 	if (!res) Clog::debug("Bad event");
 }
+
+#include "Utility/task_object.hpp"
+#include "Utility/task_controler.hpp"
+#include "Utility/task_dispatcher.hpp"
+
+void task_obj(void) {
+	task::dispatcher m_dispatcher;
+	task::controler m_controler;
+	m_dispatcher.start(10);
+	m_controler.init(&m_dispatcher);
+	
+	task::object obj;
+	obj.init(&m_controler);
+	obj.exec([]() {std::cout << "123" << std::endl; });
+	task::channel channel;
+	channel.attach(&obj);
+	obj.exec([]() {std::cout << "456" << std::endl; });
+	obj.close();
+	std::this_thread::sleep_for(std::chrono::microseconds(100));
+	obj.init(&m_controler);
+	channel.attach(&obj);
+
+
+	m_dispatcher.stop();
+}
+
 
 void UtilityTest::run(void)
 {
@@ -106,4 +132,5 @@ void UtilityTest::run(void)
 	com_hex_caster();
 	com_md5();
 	com_scheduler();
+	task_obj();
 }
