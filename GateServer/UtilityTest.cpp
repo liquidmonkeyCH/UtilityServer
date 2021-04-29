@@ -87,7 +87,7 @@ void com_scheduler(void)
 	com::scheduler<std::chrono::system_clock> m_scheduler;
 
 	m_scheduler.init(10);
-	m_scheduler.attach(std::chrono::microseconds(-2000), []() {Clog::debug("haha0"); });
+	m_scheduler.attach(std::chrono::microseconds(2000), []() {Clog::debug("haha0"); });
 	m_scheduler.attach(std::chrono::microseconds(4000), []() {Clog::debug("hoho"); });
 	m_scheduler.attach(std::chrono::microseconds(2000), []() {Clog::debug("haha1"); });
 	m_scheduler.attach(std::chrono::microseconds(2100), []() {Clog::debug("haha2"); });
