@@ -55,7 +55,7 @@ namespace UProject
 		bool CommitWirte(std::size_t size);
 	private:
 		std::mutex m_mutex;
-		mem::data_pool<node_t,5, 5, mem::factory_cache_type::DYNAMIC> m_kPool;
+		mem::data_pool<node_t,5> m_kPool;
 		node_t* m_pReaderNode;
 		node_t* m_pWirterNode;
 		std::ptrdiff_t m_nLastRead;
@@ -93,7 +93,7 @@ namespace UProject
 	private:
 		std::mutex m_mutex;
 		com::task_thread<task_info> m_thread;
-		mem::data_factory_ex<LogRecorder, 5> m_kPool;
+		mem::data_pool<LogRecorder, 5> m_kPool;
 		std::atomic<state_t> m_state;
 		log_level m_level;
 		LogRecorder* m_pIdleRecorder;

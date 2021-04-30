@@ -130,6 +130,26 @@ void task_object(void) {
 	m_dispatcher.stop();
 }
 
+void data_pool(void) {
+	mem::data_factory<int, 10> m_factory;
+	mem::data_pool<int, 10> m_pool;
+	mem::data_factory_s<int, 10> m_factory_s;
+	mem::data_pool_s<int, 10> m_pool_s;
+
+	int* a = m_factory.malloc();
+	m_factory.free(a);
+
+	a = m_pool.malloc();
+	m_pool.free(a);
+
+	a = m_factory_s.malloc();
+	m_factory_s.free(a);
+
+	a = m_pool_s.malloc();
+	m_pool_s.free(a);
+
+}
+
 void UtilityTest::run(void)
 {
 	com_guard();
@@ -137,4 +157,5 @@ void UtilityTest::run(void)
 	com_md5();
 	com_scheduler();
 	task_object();
+	data_pool();
 }
