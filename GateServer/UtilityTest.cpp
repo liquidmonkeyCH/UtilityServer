@@ -126,7 +126,7 @@ void task_object(void) {
 	channel1.exec([&]() { std::cout << "channel1.exec 2" << std::endl; });
 	channel2.exec([]() { std::cout << "channel2.exec 2" << std::endl; });
 	channel1.close();
-	std::this_thread::sleep_for(std::chrono::seconds(10));
+	//std::this_thread::sleep_for(std::chrono::seconds(1));
 	m_dispatcher.stop();
 }
 
@@ -150,6 +150,42 @@ void data_pool(void) {
 
 }
 
+#include "Utility/com_widgets.hpp"
+void widgets(void) {
+	int x = 10;
+	int y = 1000;
+	auto f = com::future(x);
+	std::cout << " now:" << f.set(100) << " 1st:" << f.set(y);
+	std::cout << " 2nd:" << x << std::endl;
+
+	struct test {
+		void print() { std::cout << "ok" << std::endl; }
+	};
+
+	
+}
+
+void com_thread(void) {
+	com::threadpool_ex pool;
+	pool.set_grow(10);
+	pool.init(5);
+	std::atomic_int num = 0;
+	std::atomic_bool running = true;
+
+	pool.schedule([&]() { 
+		while (running) {
+			std::cout << "suspend:" << pool.suspend_size() << " size:" << pool.size() << std::endl; 
+			std::this_thread::sleep_for(std::chrono::microseconds(1000));
+		}});
+
+	for(int i = 1; i<50; ++i)
+		pool.schedule([&]() { std::this_thread::sleep_for(std::chrono::microseconds(1000)); std::cout << ++num << ":running" << std::endl; });
+
+	std::this_thread::sleep_for(std::chrono::seconds(5));
+	running = false;
+	pool.safe_stop();
+}
+
 void UtilityTest::run(void)
 {
 	com_guard();
@@ -158,4 +194,6 @@ void UtilityTest::run(void)
 	com_scheduler();
 	task_object();
 	data_pool();
+	widgets();
+	com_thread();
 }
