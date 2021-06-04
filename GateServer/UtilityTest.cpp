@@ -254,6 +254,7 @@ void com_aes(void) {
 
 	Xor((std::uint8_t*)(plain), (std::uint8_t*)p, 16);
 	char out[1024];
+	char a = 0x44;
 
 	com::aes128 aes128;
 	aes128.set_key(key);
