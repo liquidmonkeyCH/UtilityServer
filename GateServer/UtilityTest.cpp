@@ -244,7 +244,9 @@ void com_sha256(void) {
 void com_aes(void) {
 	char key[] = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 	char plain[] = "0123456789abcdef0123456789abcdef0123456789abcdef";
-	char iv[] = "\x10\xb2\x37\xe5\x29\xbc\xc9\xf4\x52\x70\x86\xaf";
+	//char iv[] = "\x10\xb2\x37\xe5\x29\xbc\xc9\xf4\x52\x70\x86\xaf";
+	// https://www.ssleye.com/aes_aead_cipher.html 
+	char iv[] = "456789abcdef";
 
 	char out[1024];
 
@@ -253,7 +255,7 @@ void com_aes(void) {
 	aes128.set_iv(iv,12);
 	size_t out_len = 1024;
 
-	aes128.encrypt(out_len, out, plain, strlen(plain), com::aes128::mode_t::GCM);
+	aes128.encrypt(out_len, out, plain, strlen(plain), com::aes128::mode_t::CTR);
 	std::cout << "加密后大小：" << out_len << std::endl;
 	std::cout << "加密后的密文：" << std::endl;
 	for (int i = 0; i < out_len; ++i)
