@@ -1,0 +1,2 @@
+C:\Users\user\Documents\GitHub\UtilityServer\Debug\CommonServer.pdb
+C:\Users\user\Documents\GitHub\UtilityServer\CommonServer\Debug\CommonServer.pdb

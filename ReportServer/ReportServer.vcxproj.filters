@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Framework">
+      <UniqueIdentifier>{e7697198-7838-4450-9d94-3f6ca65e1027}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Service">
+      <UniqueIdentifier>{ef81e22c-d967-47ee-af54-15528967500c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="ReportServer.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceDataManager.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ReportServer.hpp">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceDataManager.hpp">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="Defines.hpp">
+      <Filter>Framework</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

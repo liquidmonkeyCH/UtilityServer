@@ -18,14 +18,7 @@ namespace UProject
 		DECLARE_SINGLETON_DEFAULT(JsonConfig)
 	public:
 		bool Load(const char* json_file);
-
 		Json::Value m_root;
-		Json::Value m_kGameConf;
-		Json::Value m_kWorldConf;
-		Json::Value m_kMsgConf;
-		Json::Value m_kDBConf;
-		Json::Value m_kGameCliConf;
-		Json::Value m_kMysqlConf;
 	};
 }
 
