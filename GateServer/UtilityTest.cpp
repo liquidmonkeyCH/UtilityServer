@@ -241,21 +241,26 @@ void com_sha256(void) {
 }
 
 #include "Utility/com_aes.hpp"
+inline void Xor(std::uint8_t* mtx, const std::uint8_t* key, size_t n) { for (int i = 0; i < n; ++i) *mtx++ ^= *key++; }
 void com_aes(void) {
-	char key[] = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-	char plain[] = "0123456789abcdef0123456789abcdef0123456789abcdef";
+	char key[] = u8"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+	char plain[] = { 0xeb,0xd3,0xf5,0x0d,0x35,0x4f,0xa9,0xd3,0x0b,0x53,0x0d,0x7d,0x98,0xb4,0xbf,0xdb }; //u8"0123456789abcdef0123456789abcdef0123456789abcdef";
+	//char plain[] = { 0x6f,0xf8,0x0a,0x98,0xe1,0x30,0x50,0xeb,0x56,0xbd,0xa0,0xc7,0x76,0xf8,0xd5,0x3d };
 	//char iv[] = "\x10\xb2\x37\xe5\x29\xbc\xc9\xf4\x52\x70\x86\xaf";
-	// https://www.ssleye.com/aes_aead_cipher.html 
-	char iv[] = "456789abcdef";
+	/* https://www.ssleye.com/aes_aead_cipher.html */
+	char iv[] = u8"aaaaaaaaaaaaaaaa";
+	const char* temp = "10b237e529bcc9f4527086af6604e2a9579ad243ebf5a035bbcec9f861ff5c820fcdc03679895a5f9e9d49124a3a70d7f1271480eec4d4c75ce0f7ff281352e6";
+	const char* p = "0123456789abcdef";
 
+	Xor((std::uint8_t*)(plain), (std::uint8_t*)p, 16);
 	char out[1024];
 
 	com::aes128 aes128;
 	aes128.set_key(key);
-	aes128.set_iv(iv,12);
+	aes128.set_iv(iv,16);
 	size_t out_len = 1024;
 
-	aes128.encrypt(out_len, out, plain, strlen(plain), com::aes128::mode_t::CTR);
+	aes128.decrypt(out_len, out, plain, 16/*strlen(plain)*/, com::aes128::mode_t::ECB, com::aes128::padding_t::None);
 	std::cout << "加密后大小：" << out_len << std::endl;
 	std::cout << "加密后的密文：" << std::endl;
 	for (int i = 0; i < out_len; ++i)
