@@ -1,0 +1,10 @@
+{
+	"debug": {
+	},
+	"release": {
+	},
+	"common": {
+		"link_path": "../bin_debug/libs",
+		"link_libs": "Utility;CommonServer;pthread;curl"
+	}
+}

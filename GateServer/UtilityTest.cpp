@@ -202,9 +202,9 @@ void com_base64(void) {
 	char encode[1024];
 	char decode[1024];
 	com::base64 base64;
-	base64.encoding(str, encode, 1024, false);
+	base64.encoding(str, strlen(str), encode, 1024, false);
 	std::cout << encode << std::endl;
-	base64.decoding(encode, decode, 1024);
+	base64.decoding(encode, strlen(encode), decode, 1024);
 	std::cout << decode << std::endl;
 }
 
@@ -236,7 +236,16 @@ void com_sha256(void) {
 	Clog::debug("data1+data2->sha256:%s", sha256_data.c_str());
 
 	sha256_data.reset();
-	sha256_data.update("12345", 5);
+	sha256_data.update("d363289c501dbd9ea253a78b330ea014appId2668efcce0b1414f8f2fa0dd69142dfabizId2201011347timestamps1623059982404", 107);
+	sha256_data.update("{\"data\":\"", 9);
+	sha256_data.update("MLAzKefArZ3zw48HCaIrdc",22);
+	sha256_data.update("+fbGzkY+jodBbUB/", 16);
+	sha256_data.update("V0DtSASPotkJnUP7S9J5jcy07uuq/", 29);
+	sha256_data.update("QIbecZOL3ivS3sBaYf52nlaC8STNQF3+", 32);
+	sha256_data.update("lCgWTP7qSdO8jNSpA0EMHTNo9Z3NVpYibAVEkRthEKCe/", 45);
+	sha256_data.update("eBVqhQ/kXCKc0xni/F/", 19);
+	sha256_data.update("rMHcBDTCEzSauMYs2W0YBeZrS57qguP3s7R3UUdvKewOknNU0tySUR5l6MlPZ52VOy6VxX2", 71);
+	sha256_data.update("/ZMqCB\"}", 8);
 	Clog::debug("12345->sha256:%s", sha256_data.c_str());
 }
 
@@ -277,7 +286,7 @@ void curl_test(void) {
 	CURLcode res;
 	std::string data;
 	struct curl_slist* headers = NULL;
-	headers = curl_slist_append(headers, "Accept: Agent-007");
+	headers = curl_slist_append(headers, "'Content - Type':'application / json; charset = utf - 8','appId':'09139edbe20f4418b62cdc76d354419c','bizId':'1101999999'");
 	curl = curl_easy_init();    // ≥ı ºªØ
 	if (curl)
 	{
@@ -292,6 +301,9 @@ void curl_test(void) {
 			curl_slist_free_all(headers);
 			curl_easy_cleanup(curl);
 		}
+
+		curl_easy_setopt(curl, CURLOPT_URL, "http://www.baidu.com");
+		res = curl_easy_perform(curl);   // ÷¥––
 	}
 }
 
@@ -309,5 +321,5 @@ void UtilityTest::run(void)
 	com_base64();
 	com_sha256();
 	com_aes();
-	curl_test();
+	//curl_test();
 }

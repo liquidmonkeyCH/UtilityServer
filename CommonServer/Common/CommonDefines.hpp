@@ -34,6 +34,7 @@
 #include <iostream>
 #include <sstream>
 #include <chrono>
+#include <cstdio>
 
 #ifdef _WIN32
 inline tm* localtime_r(const time_t* timep, struct tm* result)

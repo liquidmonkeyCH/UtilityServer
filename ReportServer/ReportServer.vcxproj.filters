@@ -7,6 +7,9 @@
     <Filter Include="Service">
       <UniqueIdentifier>{ef81e22c-d967-47ee-af54-15528967500c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{dd81985a-b1c9-4556-b452-909de8463a5c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -15,19 +18,31 @@
     <ClCompile Include="ReportServer.cpp">
       <Filter>Framework</Filter>
     </ClCompile>
-    <ClCompile Include="ServiceDataManager.cpp">
+    <ClCompile Include="ServiceReportManager.cpp">
       <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="http_requester.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Reporter.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ReportServer.hpp">
       <Filter>Framework</Filter>
     </ClInclude>
-    <ClInclude Include="ServiceDataManager.hpp">
+    <ClInclude Include="ServiceReportManager.hpp">
       <Filter>Service</Filter>
     </ClInclude>
-    <ClInclude Include="Defines.hpp">
+    <ClInclude Include="http_requester.hpp">
       <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Reporter.hpp">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="StructsDn.hpp">
+      <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

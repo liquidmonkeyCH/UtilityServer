@@ -98,7 +98,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)bin_debug\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Utility.lib;CommonServer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Utility.lib;CommonServer.lib;libcurl_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -129,7 +129,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)bin_debug\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Utility.lib;CommonServer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Utility.lib;CommonServer.lib;libcurl_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -149,14 +149,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ServiceDataManager.cpp" />
+    <ClCompile Include="http_requester.cpp" />
+    <ClCompile Include="ServiceReportManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ReportServer.cpp" />
+    <ClCompile Include="Reporter.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Defines.hpp" />
-    <ClInclude Include="ServiceDataManager.hpp" />
+    <ClInclude Include="StructsDn.hpp" />
+    <ClInclude Include="http_requester.hpp" />
+    <ClInclude Include="ServiceReportManager.hpp" />
     <ClInclude Include="ReportServer.hpp" />
+    <ClInclude Include="Reporter.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
