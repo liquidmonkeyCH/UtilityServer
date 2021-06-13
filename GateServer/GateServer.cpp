@@ -37,8 +37,8 @@ namespace UProject
 	// Log
 	void GateServer::createLogsystem(void){
 		main::logsystem* pLog = main::logsystem::GetInstance();
-		pLog->start();
-		//Clog::active_logger(pLog);
+		pLog->start("./GateServer", main::logsystem::level::debug);
+		Clog::active_logger(pLog);
 	}
 	void GateServer::destoryLogsystem(void){
 		main::logsystem::GetInstance()->stop();
