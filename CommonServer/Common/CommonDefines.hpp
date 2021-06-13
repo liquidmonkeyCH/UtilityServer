@@ -36,19 +36,6 @@
 #include <chrono>
 #include <cstdio>
 
-#ifdef _WIN32
-inline tm* localtime_r(const time_t* timep, struct tm* result)
-{
-	localtime_s(result, timep);
-	return result;
-}
-#else
-#include <pthread.h>
-inline pthread_t GetCurrentThreadId()
-{
-	return pthread_self();
-}
-#endif // _WIN32
 #include "Utility/com_service.hpp"
 #include "Utility/com_service_manager.hpp"
 #include "Utility/logger.hpp"

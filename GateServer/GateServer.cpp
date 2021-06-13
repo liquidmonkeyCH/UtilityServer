@@ -6,12 +6,11 @@
 
 #include "GateServer.hpp"
 
-#include "Common/LogSystem.hpp"
 #include "GateResponder.hpp"
 
 // 系统服务
-#include "Common/LogSystem.hpp"
 #include "UtilityTest.hpp"
+#include "Utility/logsystem.hpp"
 
 
 namespace UProject
@@ -37,12 +36,12 @@ namespace UProject
 
 	// Log
 	void GateServer::createLogsystem(void){
-		LogSystem* pLog = LogSystem::GetInstance();
-		pLog->Start(LogSystem::log_level::debug);
+		main::logsystem* pLog = main::logsystem::GetInstance();
+		pLog->start();
 		//Clog::active_logger(pLog);
 	}
 	void GateServer::destoryLogsystem(void){
-		LogSystem::GetInstance()->Stop();
+		main::logsystem::GetInstance()->stop();
 	}
 
 	// 网络服务

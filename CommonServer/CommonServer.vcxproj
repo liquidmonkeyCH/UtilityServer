@@ -148,12 +148,10 @@
     <ClInclude Include="Common\CommonDefines.hpp" />
     <ClInclude Include="Common\json.h" />
     <ClInclude Include="Common\JsonConfig.hpp" />
-    <ClInclude Include="Common\LogSystem.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\JsonConfig.cpp" />
     <ClCompile Include="Common\jsoncpp.cpp" />
-    <ClCompile Include="Common\LogSystem.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

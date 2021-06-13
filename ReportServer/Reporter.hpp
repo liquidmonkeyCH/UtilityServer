@@ -15,7 +15,7 @@ namespace UProject
 
 class Reporter
 {
-	static constexpr size_t MAX_BUFFER_LEN = 1024;
+	static constexpr size_t MAX_BUFFER_LEN = 30720;
 public:
 	Reporter(void) = default;
 	~Reporter(void) = default;
