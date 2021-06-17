@@ -322,4 +322,6 @@ void UtilityTest::run(void)
 	com_sha256();
 	com_aes();
 	//curl_test();
+
+	std::cout << std::oct << time(nullptr) << std::endl;
 }

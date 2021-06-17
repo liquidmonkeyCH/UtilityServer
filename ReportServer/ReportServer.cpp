@@ -62,8 +62,8 @@ namespace UProject
 
 	// Log
 	void ReportServer::createLogsystem(void) {
-		auto pLog = main::logsystem<1024>::GetInstance();
-		pLog->start(main::logsystem<1024>::log_level::debug,"",1024);
+		auto pLog = main::logsystem::GetInstance();
+		pLog->start("./ReportServer",main::logsystem::level::debug);
 		Clog::active_logger(pLog);
 	}
 	void ReportServer::destoryLogsystem(void) {

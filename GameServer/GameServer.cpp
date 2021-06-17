@@ -6,11 +6,10 @@
 
 #include "GameServer.hpp"
 
-#include "Common/LogSystem.hpp"
+#include "Utility/logsystem.hpp"
 #include "ClientResponder.hpp"
 
 // 系统服务
-#include "Common/LogSystem.hpp"
 
 
 namespace UProject
@@ -36,12 +35,12 @@ namespace UProject
 
 	// Log
 	void GameServer::createLogsystem(void) {
-		LogSystem* pLog = LogSystem::GetInstance();
-		pLog->Start(LogSystem::log_level::debug);
+		main::logsystem* pLog = main::logsystem::GetInstance();
+		pLog->start("./GameServer",main::logsystem::level::debug);
 		//Clog::active_logger(pLog);
 	}
 	void GameServer::destoryLogsystem(void) {
-		LogSystem::GetInstance()->Stop();
+		main::logsystem::GetInstance()->stop();
 	}
 
 	// 网络服务
