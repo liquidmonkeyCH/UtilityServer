@@ -324,4 +324,10 @@ void UtilityTest::run(void)
 	//curl_test();
 
 	std::cout << std::oct << time(nullptr) << std::endl;
+
+	char buffer[4096];
+	com::base64 base64;
+	size_t out_size = base64.decoding("tZ1eDgAAAAAAAAAA1R6h39aNJtljPWMCK+fBRYfhesqMZkO/LXTh/+A++LlHp23SdAYziQuLEHwwZlZC39NN/o+vqjE+FWex0tEQJpHy+XmGCLm4LocRJZRcjKXykrX6bftI5dA7krAToOv1yKWkpmUaIVxFI2zY7NB+v78Fl+4a7RACrD0W4ZAmGnaZPyVAh9hFLQM+z1pjbz676uEJmCJAHX74LDnxQ5o72CEE925POKQu"
+, 240, buffer, 4096);
+
 }

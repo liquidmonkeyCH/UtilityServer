@@ -36,7 +36,7 @@ namespace UProject
 	// Log
 	void GameServer::createLogsystem(void) {
 		main::logsystem* pLog = main::logsystem::GetInstance();
-		pLog->start("./GameServer",main::logsystem::level::debug);
+		pLog->start("./GameServer");
 		//Clog::active_logger(pLog);
 	}
 	void GameServer::destoryLogsystem(void) {

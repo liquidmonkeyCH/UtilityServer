@@ -12,9 +12,6 @@
     <ClCompile Include="ClientResponder.cpp">
       <Filter>Framework</Filter>
     </ClCompile>
-    <ClCompile Include="ClientSession.cpp">
-      <Filter>Framework</Filter>
-    </ClCompile>
     <ClCompile Include="GameServer.cpp">
       <Filter>Framework</Filter>
     </ClCompile>
@@ -27,9 +24,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientResponder.hpp">
-      <Filter>Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="ClientSession.hpp">
       <Filter>Framework</Filter>
     </ClInclude>
     <ClInclude Include="GameServer.hpp">

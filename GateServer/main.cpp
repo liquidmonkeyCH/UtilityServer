@@ -10,9 +10,6 @@ using namespace UProject;
 
 int main(int argc, char* argv[])
 {
-	logger kLogger(logger::log_level::debug);
-	Clog::active_logger(&kLogger);
-
 	GateServer* server = GateServer::GetInstance();
 	if (server->Start(argc, argv))
 		server->Run();

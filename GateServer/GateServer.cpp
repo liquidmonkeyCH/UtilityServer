@@ -30,14 +30,15 @@ namespace UProject
 	}
 	void GateServer::OnStop(void) {}
 	// 初始化
-	void GateServer::init(void) {}
+	void GateServer::init(void) {
+	}
 	// 加载服务器配置
 	bool GateServer::loadConfig(void) { return true; }
 
 	// Log
 	void GateServer::createLogsystem(void){
 		main::logsystem* pLog = main::logsystem::GetInstance();
-		pLog->start("./GateServer", main::logsystem::level::debug);
+		pLog->start("./GateServer");
 		Clog::active_logger(pLog);
 	}
 	void GateServer::destoryLogsystem(void){
