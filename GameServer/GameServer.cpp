@@ -6,10 +6,9 @@
 
 #include "GameServer.hpp"
 
-#include "Utility/logsystem.hpp"
 #include "ClientResponder.hpp"
-
-// ÏµÍ³·þÎñ
+#include "Utility/logsystem.hpp"
+// ÏµÍ³ï¿½ï¿½ï¿½ï¿½
 
 
 namespace UProject
@@ -28,9 +27,9 @@ namespace UProject
 		return true;
 	}
 	void GameServer::OnStop(void) {}
-	// ³õÊ¼»¯
+	// ï¿½ï¿½Ê¼ï¿½ï¿½
 	void GameServer::init(void) {}
-	// ¼ÓÔØ·þÎñÆ÷ÅäÖÃ
+	// ï¿½ï¿½ï¿½Ø·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	bool GameServer::loadConfig(void) { return true; }
 
 	// Log
@@ -43,13 +42,13 @@ namespace UProject
 		main::logsystem::GetInstance()->stop();
 	}
 
-	// ÍøÂç·þÎñ
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	void GameServer::createNetwork(void) {
 		m_io_service.start();
 		m_dispatcher_client.start();
 		m_dispatcher_other.start(10);
 		ServiceManager::Attach<ClientResponder>(&ClientResponder::init, 1000, &m_io_service, &m_dispatcher_client);
-		ServiceManager::GetService<ClientResponder>()->start("0.0.0.0", 5001); // ÁÙÊ±·ÅÕâÀï fix me!
+		ServiceManager::GetService<ClientResponder>()->start("0.0.0.0", 5001); // ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ fix me!
 	}
 	void GameServer::destoryNetwork(void) {
 		ServiceManager::Detach<ClientResponder>(&ClientResponder::stop);
@@ -58,7 +57,7 @@ namespace UProject
 		m_dispatcher_other.stop();
 	}
 
-	// Âß¼­·þÎñ
+	// ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½
 	void GameServer::createService(void) {
 		
 	}

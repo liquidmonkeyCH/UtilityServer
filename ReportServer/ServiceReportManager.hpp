@@ -32,7 +32,7 @@ namespace UProject
 		com::threadpool m_works;
 		mem::data_pool_s<Reporter, 10> m_reporter_pool;
 		mem::data_pool_s<ReportCollection, 10> m_data_pool;
-		ReportCollection* m_recv;
+		ReportCollection* m_recv = nullptr;
 		std::list<ReportCollection*> m_sendlist[2];
 		bool m_flag = false;
 		time_t m_last_send = 0;

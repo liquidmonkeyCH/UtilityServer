@@ -6,11 +6,11 @@
 
 #include "GateServer.hpp"
 
-#include "Utility/logsystem.hpp"
 #include "GateResponder.hpp"
 
-// ÏµÍ³·şÎñ
+// ÏµÍ³ï¿½ï¿½ï¿½ï¿½
 #include "UtilityTest.hpp"
+#include "Utility/logsystem.hpp"
 
 
 namespace UProject
@@ -29,10 +29,10 @@ namespace UProject
 		return true; 
 	}
 	void GateServer::OnStop(void) {}
-	// ³õÊ¼»¯
+	// ï¿½ï¿½Ê¼ï¿½ï¿½
 	void GateServer::init(void) {
 	}
-	// ¼ÓÔØ·şÎñÆ÷ÅäÖÃ
+	// ï¿½ï¿½ï¿½Ø·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	bool GateServer::loadConfig(void) { return true; }
 
 	// Log
@@ -45,13 +45,13 @@ namespace UProject
 		main::logsystem::GetInstance()->stop();
 	}
 
-	// ÍøÂç·şÎñ
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	void GateServer::createNetwork(void){
 		m_io_service.start();
 		m_dispatcher_client.start();
 		m_dispatcher_other.start(10);
 		ServiceManager::Attach<GateResponder>(&GateResponder::init, 1000, &m_io_service, &m_dispatcher_client);
-		ServiceManager::GetService<GateResponder>()->start("0.0.0.0", 5001); // ÁÙÊ±·ÅÕâÀï fix me!
+		ServiceManager::GetService<GateResponder>()->start("0.0.0.0", 5001); // ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ fix me!
 	}
 	void GateServer::destoryNetwork(void){
 		ServiceManager::Detach<GateResponder>(&GateResponder::stop);
@@ -60,7 +60,7 @@ namespace UProject
 		m_dispatcher_other.stop();
 	}
 
-	// Âß¼­·şÎñ
+	// ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½
 	void GateServer::createService(void) {
 		ServiceManager::Attach<UtilityTest>(&UtilityTest::run);
 	}
