@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include "Common/json.h"
 using namespace Utility;
 
 #include "Utility/com_hex_caster.hpp"
@@ -87,16 +88,17 @@ void com_scheduler(void)
 	com::scheduler<std::chrono::system_clock> m_scheduler;
 
 	m_scheduler.init(10);
-	m_scheduler.attach(std::chrono::microseconds(2000), []() {Clog::debug("haha0"); });
-	m_scheduler.attach(std::chrono::microseconds(4000), []() {Clog::debug("hoho"); });
-	m_scheduler.attach(std::chrono::microseconds(2000), []() {Clog::debug("haha1"); });
-	m_scheduler.attach(std::chrono::microseconds(2100), []() {Clog::debug("haha2"); });
-	m_scheduler.attach(std::chrono::microseconds(2500), []() {Clog::debug("haha3"); });
-	auto res = m_scheduler.attach(std::chrono::microseconds(2700), []() {Clog::debug("haha4"); });
-	std::this_thread::sleep_for(std::chrono::microseconds(1400));
+	m_scheduler.attach(time(NULL) + 2, []() {Clog::debug("time"); });
+	m_scheduler.attach(std::chrono::milliseconds(2000), []() {Clog::debug("haha0"); });
+	m_scheduler.attach(std::chrono::milliseconds(4000), []() {Clog::debug("hoho"); });
+	m_scheduler.attach(std::chrono::milliseconds(2000), []() {Clog::debug("haha1"); });
+	m_scheduler.attach(std::chrono::milliseconds(2100), []() {Clog::debug("haha2"); });
+	m_scheduler.attach(std::chrono::milliseconds(2500), []() {Clog::debug("haha3"); });
+	auto res = m_scheduler.attach(std::chrono::milliseconds(2700), []() {Clog::debug("haha4"); });
+	std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 	if (res.cancel()) Clog::debug("Cancel,%lld", std::chrono::system_clock::now().time_since_epoch().count());
 	m_scheduler.stop();
-	res = m_scheduler.attach(std::chrono::microseconds(2700), []() {Clog::debug("haha5"); });
+	res = m_scheduler.attach(std::chrono::milliseconds(2700), []() {Clog::debug("haha5"); });
 	if (!res) Clog::debug("Bad event");
 }
 
@@ -148,21 +150,6 @@ void data_pool(void) {
 	a = m_pool_s.malloc();
 	m_pool_s.free(a);
 
-}
-
-#include "Utility/com_widgets.hpp"
-void widgets(void) {
-	int x = 10;
-	int y = 1000;
-	auto f = com::future(x);
-	std::cout << " now:" << f.set(100) << " 1st:" << f.set(y);
-	std::cout << " 2nd:" << x << std::endl;
-
-	struct test {
-		void print() { std::cout << "ok" << std::endl; }
-	};
-
-	
 }
 
 void com_thread(void) {
@@ -236,17 +223,13 @@ void com_sha256(void) {
 	Clog::debug("data1+data2->sha256:%s", sha256_data.c_str());
 
 	sha256_data.reset();
-	sha256_data.update("d363289c501dbd9ea253a78b330ea014appId2668efcce0b1414f8f2fa0dd69142dfabizId2201011347timestamps1623059982404", 107);
-	sha256_data.update("{\"data\":\"", 9);
-	sha256_data.update("MLAzKefArZ3zw48HCaIrdc",22);
-	sha256_data.update("+fbGzkY+jodBbUB/", 16);
-	sha256_data.update("V0DtSASPotkJnUP7S9J5jcy07uuq/", 29);
-	sha256_data.update("QIbecZOL3ivS3sBaYf52nlaC8STNQF3+", 32);
-	sha256_data.update("lCgWTP7qSdO8jNSpA0EMHTNo9Z3NVpYibAVEkRthEKCe/", 45);
-	sha256_data.update("eBVqhQ/kXCKc0xni/F/", 19);
-	sha256_data.update("rMHcBDTCEzSauMYs2W0YBeZrS57qguP3s7R3UUdvKewOknNU0tySUR5l6MlPZ52VOy6VxX2", 71);
-	sha256_data.update("/ZMqCB\"}", 8);
-	Clog::debug("12345->sha256:%s", sha256_data.c_str());
+	sha256_data.update("d363289c501dbd9ea253a78b330ea014ai1234567890appId2668efcce0b1414", 64);
+	Clog::debug("sha256:%s", sha256_data.c_str());
+	sha256_data.update("f8f2fa0dd69142dfabizId2201011347timestamps162763473501", 54);
+	Clog::debug("sha256:%s", sha256_data.c_str());
+	sha256_data.reset();
+	sha256_data.update("d363289c501dbd9ea253a78b330ea014ai1234567890appId2668efcce0b1414f8f2fa0dd69142dfabizId2201011347timestamps162763473501", 118);
+	Clog::debug("sha256:%s", sha256_data.c_str());
 }
 
 #include "Utility/com_aes.hpp"
@@ -307,27 +290,59 @@ void curl_test(void) {
 	}
 }
 
+#include "Utility/com_random.hpp"
+#include "Utility/com_singleton.hpp"
+void random_test(void) {
+	com::random RandomBase;
+	auto a = RandomBase.make<int>(0, 9);
+	for(int i=0; i<10; ++i)
+		std::cout << a.gen() << std::endl;
+	auto b = RandomBase.make<float>();
+	for (int i = 0; i < 10; ++i)
+		std::cout << b.gen() << std::endl;
+
+	std::cout << RandomBase.gen<int>(10) << std::endl;
+	std::cout << RandomBase.gen<double>() << std::endl;
+	std::cout << RandomBase.gen<int>() % 100 << std::endl;
+	std::cout << com::rand() << std::endl;
+	std::cout << com::rand<float>() << std::endl;
+
+	using Random = com::wrap::Singleton<com::random>;
+	Random::GetInstance();
+}
+
+class date_time : public com::tm
+{
+public:
+	inline void set(time_t t = time(nullptr)) { 
+		tm::set(t);
+		snprintf(m_str, 20, "%04d%c%02d%c%02d%c%02d%c%02d%c%02d",
+			this->tm_year + 1900, 0, this->tm_mon + 1, 0, this->tm_mday,
+			0, this->tm_hour, 0, this->tm_min, 0, this->tm_sec);
+	}
+	
+
+private:
+	char m_str[20] = {};
+};
+
+
 void UtilityTest::run(void)
 {
 	com_guard();
 	com_hex_caster();
 	com_md5();
-	com_scheduler();
+	//com_scheduler();
 	task_object();
 	data_pool();
-	widgets();
 	//com_thread();
 	com_character();
 	com_base64();
 	com_sha256();
 	com_aes();
+
+	random_test();
 	//curl_test();
 
-	std::cout << std::oct << time(nullptr) << std::endl;
-
-	char buffer[4096];
-	com::base64 base64;
-	size_t out_size = base64.decoding("tZ1eDgAAAAAAAAAA1R6h39aNJtljPWMCK+fBRYfhesqMZkO/LXTh/+A++LlHp23SdAYziQuLEHwwZlZC39NN/o+vqjE+FWex0tEQJpHy+XmGCLm4LocRJZRcjKXykrX6bftI5dA7krAToOv1yKWkpmUaIVxFI2zY7NB+v78Fl+4a7RACrD0W4ZAmGnaZPyVAh9hFLQM+z1pjbz676uEJmCJAHX74LDnxQ5o72CEE925POKQu"
-, 240, buffer, 4096);
 
 }

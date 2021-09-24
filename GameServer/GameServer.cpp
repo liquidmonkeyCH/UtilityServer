@@ -8,7 +8,6 @@
 
 #include "ClientResponder.hpp"
 #include "Utility/logsystem.hpp"
-// ϵͳ����
 
 
 namespace UProject
@@ -27,9 +26,7 @@ namespace UProject
 		return true;
 	}
 	void GameServer::OnStop(void) {}
-	// ��ʼ��
 	void GameServer::init(void) {}
-	// ���ط���������
 	bool GameServer::loadConfig(void) { return true; }
 
 	// Log
@@ -42,13 +39,12 @@ namespace UProject
 		main::logsystem::GetInstance()->stop();
 	}
 
-	// �������
 	void GameServer::createNetwork(void) {
 		m_io_service.start();
 		m_dispatcher_client.start();
 		m_dispatcher_other.start(10);
 		ServiceManager::Attach<ClientResponder>(&ClientResponder::init, 1000, &m_io_service, &m_dispatcher_client);
-		ServiceManager::GetService<ClientResponder>()->start("0.0.0.0", 5001); // ��ʱ������ fix me!
+		ServiceManager::GetService<ClientResponder>()->start("0.0.0.0", 5001);
 	}
 	void GameServer::destoryNetwork(void) {
 		ServiceManager::Detach<ClientResponder>(&ClientResponder::stop);
@@ -57,7 +53,6 @@ namespace UProject
 		m_dispatcher_other.stop();
 	}
 
-	// �߼�����
 	void GameServer::createService(void) {
 		
 	}

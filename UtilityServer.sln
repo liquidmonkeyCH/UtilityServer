@@ -22,6 +22,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameServer", "GameServer\Ga
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Utility", "..\Utility\Utility\Utility.vcxproj", "{F3243389-889C-4619-B91D-5A750C1B30AA}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sudoku", "sudoku\sudoku.vcxproj", "{5CD966A1-3F66-41AB-9062-BEE7C192713A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -62,6 +64,14 @@ Global
 		{F3243389-889C-4619-B91D-5A750C1B30AA}.Release|x64.Build.0 = Release|x64
 		{F3243389-889C-4619-B91D-5A750C1B30AA}.Release|x86.ActiveCfg = Release|Win32
 		{F3243389-889C-4619-B91D-5A750C1B30AA}.Release|x86.Build.0 = Release|Win32
+		{5CD966A1-3F66-41AB-9062-BEE7C192713A}.Debug|x64.ActiveCfg = Debug|x64
+		{5CD966A1-3F66-41AB-9062-BEE7C192713A}.Debug|x64.Build.0 = Debug|x64
+		{5CD966A1-3F66-41AB-9062-BEE7C192713A}.Debug|x86.ActiveCfg = Debug|Win32
+		{5CD966A1-3F66-41AB-9062-BEE7C192713A}.Debug|x86.Build.0 = Debug|Win32
+		{5CD966A1-3F66-41AB-9062-BEE7C192713A}.Release|x64.ActiveCfg = Release|x64
+		{5CD966A1-3F66-41AB-9062-BEE7C192713A}.Release|x64.Build.0 = Release|x64
+		{5CD966A1-3F66-41AB-9062-BEE7C192713A}.Release|x86.ActiveCfg = Release|Win32
+		{5CD966A1-3F66-41AB-9062-BEE7C192713A}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
