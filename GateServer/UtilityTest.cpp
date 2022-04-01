@@ -307,6 +307,39 @@ void curl_test(void) {
 	}
 }
 
+template<class T>
+class list
+{
+public:
+	class node
+	{
+		friend class list;
+		node* m_prev;
+		node* m_next;
+	};
+
+	inline void push_back(node* p) {
+		++m_size;
+		if (m_tail) {
+			p->m_prev = m_tail;
+			m_tail->m_next = p;
+		}
+		else
+			m_head = m_tail = p;
+	}
+private:
+	node* m_head{ nullptr };
+	node* m_tail{ nullptr };
+	size_t m_size{ 0 };
+};
+
+struct list_node : public list<list_node>::node
+{
+	int m_prev;
+};
+
+
+
 void UtilityTest::run(void)
 {
 	com_guard();
@@ -322,4 +355,11 @@ void UtilityTest::run(void)
 	com_sha256();
 	com_aes();
 	//curl_test();
+
+
+	list<list_node> kList;
+
+	list_node A;
+	A.m_prev = 1;
+	kList.push_back(&A);
 }
