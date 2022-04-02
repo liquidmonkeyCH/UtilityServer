@@ -1,4 +1,4 @@
-#include "UtilityTest.hpp"
+﻿#include "UtilityTest.hpp"
 #include "Utility/logger.hpp"
 #include <iostream>
 #include <sstream>
@@ -18,14 +18,14 @@ void com_hex_caster(void)
 	Clog::info("data(char[16]): 0,1,2,3,4,5,36,7,8,9,215,11,12,13,14,255, ");
 	unsigned char data[16] = { 0,1,2,3,4,5,36,7,8,9,215,11,12,13,14,255 };
 	auto mm = com::bin2hex<true>(data);
-	Clog::debug("bin2hex:%s", mm.str());
+	Clog::debug("bin2hex:%s", mm.c_str());
 
 	unsigned char res[16];
-	com::hex2bin<true>(res, mm.str(), mm.len);
+	com::hex2bin(mm.c_str(), res, true);
 	std::stringstream aa("");
 	for (int i = 0; i < 16; ++i)
 		aa << (unsigned int)res[i] << ",";
-	Clog::debug("hex2bin(char[16]):%s",aa.str().c_str());
+	Clog::debug("hex2bin(char[16]):%s", aa.str().c_str());
 }
 
 #include "Utility/com_md5.hpp"
@@ -70,7 +70,7 @@ void com_guard(void)
 	Clog::debug("// com::guard");
 	Clog::debug("/////////////////////////////////////////////////////////////////////////");
 
-	com::guard<const char*> kGuard("hahaha", 
+	com::guard<const char*> kGuard("hahaha",
 		[](const char* p) { Clog::debug("%s Enter", p); },
 		[](const char* p) { Clog::debug("%s Leave", p); });
 }
@@ -118,13 +118,13 @@ void task_object(void) {
 	obj1.init(&m_controler);
 	channel1.init(&m_controler);
 	channel2.init(&m_controler);
-	
+
 	obj1.exec([]() {std::this_thread::sleep_for(std::chrono::microseconds(100)); std::cout << "obj1.exec 1" << std::endl; });
 	obj1.enter_channel(channel1.to_channel());
 	channel1.exec([]() {std::this_thread::sleep_for(std::chrono::microseconds(100)); std::cout << "channel1.exec 1" << std::endl; });
 	channel1.enter_channel(channel2.to_channel());
 	channel2.exec([]() {std::this_thread::sleep_for(std::chrono::microseconds(100)); std::cout << "channel2.exec 1" << std::endl; });
-	obj1.exec([&]() { std::cout << "obj1.exec 2"  << std::endl; });
+	obj1.exec([&]() { std::cout << "obj1.exec 2" << std::endl; });
 	channel1.exec([&]() { std::cout << "channel1.exec 2" << std::endl; });
 	channel2.exec([]() { std::cout << "channel2.exec 2" << std::endl; });
 	channel1.close();
@@ -159,13 +159,13 @@ void com_thread(void) {
 	std::atomic_int num = 0;
 	std::atomic_bool running = true;
 
-	pool.schedule([&]() { 
+	pool.schedule([&]() {
 		while (running) {
-			std::cout << "suspend:" << pool.suspend_size() << " size:" << pool.size() << std::endl; 
+			std::cout << "suspend:" << pool.suspend_size() << " size:" << pool.size() << std::endl;
 			std::this_thread::sleep_for(std::chrono::microseconds(1000));
 		}});
 
-	for(int i = 1; i<50; ++i)
+	for (int i = 1; i < 50; ++i)
 		pool.schedule([&]() { std::this_thread::sleep_for(std::chrono::microseconds(1000)); std::cout << ++num << ":running" << std::endl; });
 
 	std::this_thread::sleep_for(std::chrono::seconds(5));
@@ -175,7 +175,7 @@ void com_thread(void) {
 
 #include "Utility/com_character.hpp"
 void com_character(void) {
-	const char* str = "������";
+	const char* str = "哈哈哈";
 	char buffer[1024];
 	com::GbkToUtf8(str, &buffer[0], 1024);
 	std::cout << buffer << std::endl;
@@ -248,12 +248,12 @@ void com_aes(void) {
 
 	com::aes128 aes128;
 	aes128.set_key(key);
-	aes128.set_iv(iv,12);
+	aes128.set_iv(iv, 12);
 	size_t out_len = 1024;
 
 	aes128.decrypt(out_len, out, plain, strlen(plain), com::aes128::mode_t::GCM, com::aes128::padding_t::Pkcs7);
-	std::cout << "���ܺ��С��" << out_len << std::endl;
-	std::cout << "���ܺ�����ģ�" << std::endl;
+	std::cout << "加密后大小：" << out_len << std::endl;
+	std::cout << "加密后的密文：" << std::endl;
 	for (int i = 0; i < out_len; ++i)
 	{
 		std::cout << std::hex << std::uint32_t((std::uint8_t)out[i]) << " ";
@@ -270,15 +270,15 @@ void curl_test(void) {
 	std::string data;
 	struct curl_slist* headers = NULL;
 	headers = curl_slist_append(headers, "'Content - Type':'application / json; charset = utf - 8','appId':'09139edbe20f4418b62cdc76d354419c','bizId':'1101999999'");
-	curl = curl_easy_init();    // ��ʼ��
+	curl = curl_easy_init();    // 初始化
 	if (curl)
 	{
-		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);   // ��Э��ͷ
+		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);   // 改协议头
 		curl_easy_setopt(curl, CURLOPT_URL, "http://www.baidu.com");
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, [](void* ptr, size_t size, size_t len, void* p) {
 			((std::string*)p)->append((char*)ptr, size * len); return size * len; });
-		//curl_easy_setopt(curl, CURLOPT_WRITEDATA, &data);         //�����ص�httpͷ�����fpָ����ļ�
-		res = curl_easy_perform(curl);   // ִ��
+		//curl_easy_setopt(curl, CURLOPT_WRITEDATA, &data);         //将返回的http头输出到fp指向的文件
+		res = curl_easy_perform(curl);   // 执行
 		if (res != 0) {
 
 			curl_slist_free_all(headers);
@@ -286,16 +286,18 @@ void curl_test(void) {
 		}
 
 		curl_easy_setopt(curl, CURLOPT_URL, "http://www.baidu.com");
-		res = curl_easy_perform(curl);   // ִ��
+		res = curl_easy_perform(curl);   // 执行
 	}
 }
 
 #include "Utility/com_random.hpp"
 #include "Utility/com_singleton.hpp"
+#include "Utility/com_unique_code.hpp"
+#include "Utility/com_string.hpp"
 void random_test(void) {
 	com::random RandomBase;
-	auto a = RandomBase.make<int>(0, 9);
-	for(int i=0; i<10; ++i)
+	auto a = RandomBase.make<int>(9, 0);
+	for (int i = 0; i < 10; ++i)
 		std::cout << a.gen() << std::endl;
 	auto b = RandomBase.make<float>();
 	for (int i = 0; i < 10; ++i)
@@ -309,13 +311,12 @@ void random_test(void) {
 
 	using Random = com::wrap::Singleton<com::random>;
 	Random::GetInstance();
-<<<<<<< HEAD
 
-	com::datetime date,date1(0);
+	com::datetime date, date1(0);
 	std::cout << date.to_str() << std::endl;
-	std::cout << date.to_str("YYYY��MM��DD�� ��������123123") << std::endl;
+	std::cout << date.to_str("YYYY年MM月DD日 哈哈哈哈123123") << std::endl;
 	char buffer[1024];
-	date.to_str(buffer, 1024, "YYYY��MM��DD�� ��hh��mm��ss��123123");
+	date.to_str(buffer, 1024, "YYYY年MM月DD日 哈hh哈mm哈ss哈123123");
 	std::cout << buffer << std::endl;
 
 	std::cout << date1.s_year() << std::endl;
@@ -330,12 +331,12 @@ void random_test(void) {
 	_tm.tm_yday += 31;
 	date.set(_tm.get());
 	std::cout << date.to_str() << std::endl;
-	
+
 	com::uid A("haha");
 	auto id = A.gen();
 
 	com::numeric::range<int> r(1, 10);
-	r(1,255);
+	r(1, 255);
 
 	std::cout << r(1, 255).m_max << std::endl;
 
@@ -344,33 +345,61 @@ void random_test(void) {
 	char bffer[4]{ 'A','B','C','D' };
 	str.format("hahah%d", 1);
 	str << "12345" << 1 << (const char*)buffer << bffer << (double)1.0f;
-	str.pop(10).sub(10,1);
+	str.pop(10).sub(10, 1);
 	str.copy("12345", 4);
-	str.append(5,'A');
+	str.append(5, 'A');
 	str.append(5, "123");
 
 
 	std::map<int, int> test;
 	test.emplace(1, 1);
 	auto res = test.emplace(1, 2);
-=======
->>>>>>> parent of c727116 (1)
 }
 
-class date_time : public com::tm
-{
-public:
-	inline void set(time_t t = time(nullptr)) { 
-		tm::set(t);
-		snprintf(m_str, 20, "%04d%c%02d%c%02d%c%02d%c%02d%c%02d",
-			this->tm_year + 1900, 0, this->tm_mon + 1, 0, this->tm_mday,
-			0, this->tm_hour, 0, this->tm_min, 0, this->tm_sec);
-	}
-	
+#include "Utility/com_list.hpp"
+#include <list>
+void com_list(void) {
+	com::list<int> kList;
+	using node = com::list<int>::node;
+	using iterator = com::list<int>::iterator;
+	using reverse_iterator = com::list<int>::reverse_iterator;
+	node data[5];
+	*data->super() = 0;
+	**(data + 1) = 1;
+	**(data + 2) = 2;
+	**(data + 3) = 3;
+	**(data + 4) = 4;
 
-private:
-	char m_str[20] = {};
-};
+	kList.push_back(data + 1);			// 1
+	kList.push_front(data + 2);			// 2 1
+
+	kList.pop_back();					// 2
+	kList.pop_front();					// 
+
+	kList.push_back(data + 1);			// 1
+	kList.push_front(data + 2);			// 2 1
+
+	auto a = kList.front();
+	int i = *a;
+
+	iterator it(a);						// it->2
+
+	kList.insert(it, data + 3);			// 3 2 1
+	kList.insert(data + 1, data + 4);	// 3 2 4 1
+	kList.insert(a, data);				// 3 0 2 4 1
+
+	auto iter = kList.erase(data + 4);	// 3 0 2 1 iter->1
+	kList.insert(iter++, data + 4);		// 3 0 2 4 1 iter->null
+	kList.erase(++iter);				// 0 2 4 1 iter->3
+	kList.push_back(iter.super());		// 0 2 4 1 3
+
+	for (iter = kList.begin(), i = 0; iter != kList.end(); ++iter, ++i) {
+		*iter = i;
+	}
+
+	kList.clear();
+}
+
 
 
 void UtilityTest::run(void)
@@ -389,6 +418,5 @@ void UtilityTest::run(void)
 
 	random_test();
 	//curl_test();
-
-
+	com_list();
 }
