@@ -8,7 +8,6 @@
 
 #include "ClientResponder.hpp"
 #include "Utility/logsystem.hpp"
-// 系统服务
 
 
 namespace UProject
@@ -27,28 +26,25 @@ namespace UProject
 		return true;
 	}
 	void GameServer::OnStop(void) {}
-	// 初始化
 	void GameServer::init(void) {}
-	// 加载服务器配置
 	bool GameServer::loadConfig(void) { return true; }
 
 	// Log
 	void GameServer::createLogsystem(void) {
 		main::logsystem* pLog = main::logsystem::GetInstance();
-		pLog->start();
+		pLog->start("./GameServer");
 		//Clog::active_logger(pLog);
 	}
 	void GameServer::destoryLogsystem(void) {
 		main::logsystem::GetInstance()->stop();
 	}
 
-	// 网络服务
 	void GameServer::createNetwork(void) {
 		m_io_service.start();
 		m_dispatcher_client.start();
 		m_dispatcher_other.start(10);
 		ServiceManager::Attach<ClientResponder>(&ClientResponder::init, 1000, &m_io_service, &m_dispatcher_client);
-		ServiceManager::GetService<ClientResponder>()->start("0.0.0.0", 5001); // 临时放这里 fix me!
+		ServiceManager::GetService<ClientResponder>()->start("0.0.0.0", 5001);
 	}
 	void GameServer::destoryNetwork(void) {
 		ServiceManager::Detach<ClientResponder>(&ClientResponder::stop);
@@ -57,7 +53,6 @@ namespace UProject
 		m_dispatcher_other.stop();
 	}
 
-	// 逻辑服务
 	void GameServer::createService(void) {
 		
 	}

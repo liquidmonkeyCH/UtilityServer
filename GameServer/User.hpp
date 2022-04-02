@@ -25,8 +25,7 @@ namespace UProject
 	class User_SceneInfo {};
 
 	class CUser : public User_Component
-		<msg::session<msg::pares_len::comfirmer<mem::rotative_buffer<MAX_PACKET_LEN>>>
-		,User_BasicInfo
+		<User_BasicInfo
 		,User_SceneInfo
 	>{};
 }
